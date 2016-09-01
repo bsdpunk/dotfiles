@@ -114,7 +114,7 @@ fi
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:/home/dusty/go/bin
 
-alias troz='ssh bsdpunk@x -p2222'
+alias troz='ssh bsdpunk@trozlabs.com -p2222'
 alias findd="ps aux | grep dd | grep 'if='"
 alias dprog='for i in $(findd |awk "{print $2}");do sudo kill -USR1 ;done'
 alias vimblog='vim $(perl -e "print(time())")_linux'
@@ -122,3 +122,5 @@ alias vimblog='vim $(perl -e "print(time())")_linux'
 #[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 alias node='nodejs'
 alias g='google-chrome &'
+alias gh='xclip -selection c -i ~/.gh'
+cat /etc/motd
