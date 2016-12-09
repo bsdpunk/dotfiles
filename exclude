@@ -26,6 +26,6 @@ Library/Application Support/Googl*
 *.Trash*
 *Library/Application Support/Googl*
 *.cache*
-
+Library/Caches*
 
 
