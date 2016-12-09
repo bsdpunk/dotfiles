@@ -10,5 +10,22 @@
 Steam*
 .julia*
 .Trash*
+Library/Application Support/Googl*
+.cache*
+*.DS_Store
+*._.DS_Store
+*.AppleDB
+*.AppleDouble
+*.Spotlight*
+*.DS_Store*
+*._.DS_Store*
+*.AppleDB*
+*.AppleDouble*
+*Steam*
+*.julia*
+*.Trash*
+*Library/Application Support/Googl*
+*.cache*
+
 
 
