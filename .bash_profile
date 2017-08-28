@@ -17,3 +17,5 @@ export PATH="/Users/dusty/bin/Sencha/Cmd:$PATH"
 function findmovies () { printf "find $(pwd) -type f \\( -name \"*mpg\" $( cat ~/filetypes | grep -o "A\'\*[A-Za-z0-9]\+'" | sed -e "s/A'\*\([a-zA-Z0-9]\{1,\}\)'/\-o \-name \"\*\1\" /" | tr -d '\n')" | sed 's/$/ \\) \-exec mpv {} +/'; }
 #function findmovies () { printf "find $(pwd) -type f \\( -name \"*mpg\" $(cat filetypes | ggrep -P -o "A\'\*\w+" | gsed "s/A'\*\([a-z0-9]\+\)/\-o \-name \"\*\1\" /"| tr -d '\n')" | gsed 's/$/ \\) \-exec mpv {} +/'; }
 function playmovies () { eval "$(findmovies)";  }
+alias ue='date "+%s"'
+export WEBSPHEREHTML=/Users/dustycarver/go/src/github.com/bsdpunk/webSphere/
