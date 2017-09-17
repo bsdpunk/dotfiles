@@ -20,11 +20,9 @@ function findmovies () { printf "find $(pwd) -type f \\( -name \"*mpg\" $( cat ~
 function playmovies () { eval "$(findmovies)";  }
 alias ue='date "+%s"'
 export WEBSPHEREHTML=/Users/dustycarver/go/src/github.com/bsdpunk/webSphere/
-<<<<<<< HEAD
 export QUSER=bsdpunk
 export QHOST=localhost
 export QPASSWORD=hammer
 alias thehugo='hugo --theme=hugo-theme-cactus-plus -D -E -F --forceSyncStatic'
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
-=======
->>>>>>> c6e3f8571898ea299d6be7e02684d6290d9d09af
+alias kchrome="sudo kill -9 $(sudo ps aux  | grep hrome | awk '{print $2}')"
