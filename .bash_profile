@@ -25,4 +25,5 @@ export QHOST=localhost
 export QPASSWORD=hammer
 alias thehugo='hugo --theme=hugo-theme-cactus-plus -D -E -F --forceSyncStatic'
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
-alias kchrome="sudo kill -9 $(sudo ps aux  | grep hrome | awk '{print $2}')"
+#alias kchrome="sudo kill -9 $(sudo ps aux  | grep hrome | awk '{print $2}')"
+alias testinet='while TRUE; do ping google.com -c1; done'
