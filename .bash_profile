@@ -4,8 +4,9 @@ HISTSIZE=50000
 HISTFILESIZE=500000
 shopt -s histappend
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
-export PATH="$PATH:~/Dropbox/bin/:~/go/bin/"
-export GOROOT="/usr/local/go"
+export PATH="$PATH:~/Dropbox/bin:~/go/bin"
+#export GOROOT="/usr/local/go"
+export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOROOT/bin
 export GOBIN=~/go/bin
 export GOPATH=~/go
