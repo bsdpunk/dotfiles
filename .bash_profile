@@ -10,6 +10,7 @@ export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOROOT/bin
 export GOBIN=~/go/bin
 export GOPATH=~/go
+export NVM_DIR="$HOME/.nvm" && . "$(brew --prefix nvm)/nvm.sh"
 function snap () { ps aux | awk '{print $3,$4,$1,$2,$11}'| sort -rnk1,1 | grep -v '0.0 0.0' && echo bk && vm_stat && echo bk &&  osascript -e 'path to frontmost application as text' ; }
 function wet () { wget -nc -c -r -A'*.flv' -A'*pnga' -A'*avi' -A'*ogg' -A'*ogv' -A'*gifv' -A'*mng' -A'*qt' -A'*mp4' -A'*mkv' -A'*wmv' -A'*webm' -A'*.mpg' -A'*.mov' -A'.gif' -A'.wmv' $@ ;}
 function gitall () { git add . && git commit -m "$@" && git push origin master;}
