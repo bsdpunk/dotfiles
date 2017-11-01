@@ -37,4 +37,4 @@ function rqc () { awk -F'"' -v OFS='' '{ for (i=2; i<=NF; i+=2) gsub(",", "", $i
 #PERL5LIB="/Users/dusty/.opam/system/lib/perl5"; export PERL5LIB;
 #OCAML_TOPLEVEL_PATH="/Users/dusty/.opam/system/lib/toplevel"; export OCAML_TOPLEVEL_PATH;
 #PATH="/Users/dusty/.opam/system/bin:/Users/dusty/bin/Sencha/Cmd:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/Library/TeX/texbin:/opt/X11/bin:~/Dropbox/bin:~/go/bin:/usr/local/opt/go/libexec/bin:/Users/dusty/.nvm/versions/node/v8.6.0/bin"; export PATH;
-export HOMEBREW_GITHUB_API_TOKEN=374497816ce2337e581227cd1250b6eb565aacd5
+export HOMEBREW_GITHUB_API_TOKEN=$(cat ~/.gh)
