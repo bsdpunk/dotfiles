@@ -47,6 +47,8 @@ function title {
 function upload() {
 IFS=$(echo -en "\n\b");for i in $(find /Users/dusty/torrents -cmin -7 | grep -i "torrent$" ); do scp -P 2222 -r $i root@seedbox:/home/user/Watch; done
 }
+
+#Use is magnet "magnet:magnetinformation"
 function magnet() {
     aria2c -d ~/torrents --bt-metadata-only=true --bt-save-metadata=true --listen-port=6881 "$1"
 }
