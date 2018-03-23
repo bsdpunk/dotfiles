@@ -50,3 +50,14 @@ IFS=$(echo -en "\n\b");for i in $(find /Users/dusty/torrents -cmin -7 | grep -i 
 function magnet() {
     aria2c -d ~/torrents --bt-metadata-only=true --bt-save-metadata=true --listen-port=6881 "$1"
 }
+#Stolen from MitchWeaver on github, via bin/webmify
+webmc () {
+    for ext ; do
+        find . -name "*.$ext" -exec bash -c \
+            'ffmpeg -i "{}" -y -c:v \
+            libvpx-vp9 -crf 9 -b:v 0 -c:a \
+            libopus -vbr on -b:a 64k \
+            "${0/.ext}.webm" && \
+            rm "{}"' {} \; &
+    done
+}
