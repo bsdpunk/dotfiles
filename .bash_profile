@@ -50,6 +50,13 @@ IFS=$(echo -en "\n\b");for i in $(find /Users/dusty/torrents -cmin -7 | grep -i 
 function download() {
 IFS=$(echo -en "\n\b"); scp -r -P 2222 root@seedbox:/home/user/Downloads/$@ . ;
 }
+function upload2() {
+IFS=$(echo -en "\n\b");for i in $(find /Users/dusty/torrents -cmin -7 | grep -i "torrent$" ); do scp -P 2222 -r $i root@seedbox2:/home/user/Watch; done
+}
+function download2() {
+IFS=$(echo -en "\n\b"); scp -r -P 2222 root@seedbox2:/home/user/Downloads/$@ . ;
+}
+
 
 #Use is magnet "magnet:magnetinformation"
 function magnet() {
