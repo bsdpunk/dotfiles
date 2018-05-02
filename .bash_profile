@@ -47,6 +47,9 @@ function title {
 function upload() {
 IFS=$(echo -en "\n\b");for i in $(find /Users/dusty/torrents -cmin -7 | grep -i "torrent$" ); do scp -P 2222 -r $i root@seedbox:/home/user/Watch; done
 }
+function download() {
+IFS=$(echo -en "\n\b"); scp -r -P 2222 root@seedbox:/home/user/Downloads/$@ . ;
+}
 
 #Use is magnet "magnet:magnetinformation"
 function magnet() {
