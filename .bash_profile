@@ -73,3 +73,13 @@ webmc () {
             rm "{}"' {} \; &
     done
 }
+
+function pea () {
+    python3 -m virtualenv --no-site-packages $@
+}
+
+
+#I hate using ctrl-R
+function histg() {
+        history | grep $@
+}
