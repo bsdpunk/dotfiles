@@ -81,5 +81,9 @@ function pea () {
 
 #I hate using ctrl-R
 function histg() {
-        history | grep $@
+    if [[ -z $2 ]]; then
+        history | grep $1
+    else
+        history | grep $1 | grep $2; 
+    fi
 }
