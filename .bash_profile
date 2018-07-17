@@ -22,7 +22,7 @@ function findmovies () { printf "find $(pwd) -type f \\( -name \"*mpg\" $( cat ~
 #function findmovies () { printf "find $(pwd) -type f \\( -name \"*mpg\" $(cat filetypes | ggrep -P -o "A\'\*\w+" | gsed "s/A'\*\([a-z0-9]\+\)/\-o \-name \"\*\1\" /"| tr -d '\n')" | gsed 's/$/ \\) \-exec mpv {} +/'; }
 function playmovies () { eval "$(findmovies)";  }
 alias ue='date "+%s"'
-export WEBSPHEREHTML=/Users/dustycarver/go/src/github.com/bsdpunk/webSphere/
+export WEBSPHEREHTML=/Users/dusty/git/riot_ctl_server/
 export QUSER=bsdpunk
 export QHOST=localhost
 export QPASSWORD=hammer
@@ -87,3 +87,7 @@ function histg() {
         history | grep $1 | grep $2; 
     fi
 }
+function testGet() {
+curl -X GET -H "Authorization: Bearer $(http POST localhost:12345/authenticate username=user password=pass | grep -o 'ey.*' | sed 's/"}//')" "http://localhost:12345/test"
+}
+alias getToken="http POST localhost:12345/authenticate username=user password=pass | grep -o 'ey.*' | sed 's/\"}//'"
