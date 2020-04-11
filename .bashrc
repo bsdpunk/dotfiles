@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=10000
-HISTFILESIZE=20000
+HISTSIZE=1000
+HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -28,7 +28,7 @@ shopt -s checkwinsize
 #shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -37,7 +37,7 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color) color_prompt=yes;;
+    xterm-color|*-256color) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -79,18 +79,22 @@ if [ -x /usr/bin/dircolors ]; then
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -111,16 +115,37 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-export GOPATH=$HOME/go
-export PATH=$PATH:/usr/local/go/bin:/home/dusty/go/bin
 
-alias troz='ssh bsdpunk@trozlabs.com -p2222'
-alias findd="ps aux | grep dd | grep 'if='"
-alias dprog='for i in $(findd |awk "{print $2}");do sudo kill -USR1 ;done'
-alias vimblog='vim $(perl -e "print(time())")_linux'
-#export NVM_DIR="/home/dusty/.nvm"
-#[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-alias node='nodejs'
-alias g='google-chrome &'
-alias gh='xclip -selection c -i ~/.gh'
-cat /etc/motd
+PATH=$PATH:/home/dusty/.local/bin
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin:/home/dusty/go/bin"
+function dockerkill { for i in $(sudo docker ps | awk '{ print $1 }' | sed 1d ); do echo $i; sudo docker kill $i; done; }
+function magicRec { ffmpeg -video_size 3440x1440 -framerate 25 -f x11grab -i  :0.0+1920,0 -f pulse -ac 2 -i default $1.flv;   }
+
+function conbash {
+sudo docker exec -it $1 /bin/bash
+}
+
+export CGO_CPPFLAGS="-I/usr/local/include"
+export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_face -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_features2d -lopencv_video -lopencv_dnn -lopencv_xfeatures2d"
+
+ streaming() {
+     INRES="1920x1080" # input resolution
+     OUTRES="1920x1080" # output resolution
+     FPS="30" # target FPS
+     GOP="60" # i-frame interval, should be double of FPS,
+     GOPMIN="30" # min i-frame interval, should be equal to fps,
+     THREADS="2" # max 6
+     CBR="1000k" # constant bitrate (should be between 1000k - 3000k)
+     QUALITY="ultrafast"  # one of the many FFMPEG preset
+     AUDIO_RATE="44100"
+     STREAM_KEY="$1" # use the terminal command Streaming streamkeyhere to stream your video to twitch or justin
+     SERVER="live-atl" # twitch server in frankfurt, see https://stream.twitch.tv/ingests/ for list
+
+     ffmpeg -f x11grab -s "$INRES" -r "$FPS" -i :0.0 -f pulse -i 0 -f flv -ac 2 -ar $AUDIO_RATE \
+       -vcodec libx264 -g $GOP -keyint_min $GOPMIN -b:v $CBR -minrate $CBR -maxrate $CBR -pix_fmt yuv420p\
+       -s $OUTRES -preset $QUALITY -tune film -acodec aac -threads $THREADS -strict normal \
+       -bufsize $CBR "rtmp://$SERVER.twitch.tv/app/$STREAM_KEY"
+ }
+alias vold="amixer -D pulse sset Master 5%-"
