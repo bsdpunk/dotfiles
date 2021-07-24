@@ -116,36 +116,34 @@ if ! shopt -oq posix; then
   fi
 fi
 
-PATH=$PATH:/home/dusty/.local/bin
+function bigscreen { ffmpeg -video_size 3440x1440 -framerate 25 -f x11grab -i :1 -f pulse -ac 2 -i default output.mkv; }
+function dockerkill { for i in $(sudo docker ps | awk '{ print $1 }' | sed 1d ); do echo $i; sudo docker kill $i; done; }
+function wet () { wget -nc -c -r -A'*.flv' -A'*mp4' -A'*mkv' -A'*wmv' -A'*webm' -A'*.mpg' -A'*.mov' -A'*.gif' -A'*.jpg' -A'*.wmv' $@ ;}
+function caca { find . \( -name '*.mp4' -o -name '*.webm' -o -name '*.wmv' \) -exec mpv -vo=caca {} + ; }
+function movies { find . \( -name '*.mp4' -o -name '*.webm' -o -name '*.wmv' -o -name '*.flv' -o -name '*.mkv' -o -name '*.mov' -o -name '*.wmv' \) -exec mpv {} + ; }
+function magicRec { 
+
+    ffmpeg -framAerate 25 -f x11grab -i 0.1 -f pulse -ac 2 -i default output.mkv 
+}
+PATH="$PATH:~/go/bin:/home/dusty/.cargo/bin"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin:/home/dusty/go/bin"
-function dockerkill { for i in $(sudo docker ps | awk '{ print $1 }' | sed 1d ); do echo $i; sudo docker kill $i; done; }
-function magicRec { ffmpeg -video_size 3440x1440 -framerate 25 -f x11grab -i  :0.0+1920,0 -f pulse -ac 2 -i default $1.flv;   }
+export PATH="$PATH:$HOME/.rvm/bin"
 
-function conbash {
-sudo docker exec -it $1 /bin/bash
+
+function volup {
+    pactl -- set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +10%;
 }
 
-export CGO_CPPFLAGS="-I/usr/local/include"
-export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_face -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_features2d -lopencv_video -lopencv_dnn -lopencv_xfeatures2d"
 
- streaming() {
-     INRES="1920x1080" # input resolution
-     OUTRES="1920x1080" # output resolution
-     FPS="30" # target FPS
-     GOP="60" # i-frame interval, should be double of FPS,
-     GOPMIN="30" # min i-frame interval, should be equal to fps,
-     THREADS="2" # max 6
-     CBR="1000k" # constant bitrate (should be between 1000k - 3000k)
-     QUALITY="ultrafast"  # one of the many FFMPEG preset
-     AUDIO_RATE="44100"
-     STREAM_KEY="$1" # use the terminal command Streaming streamkeyhere to stream your video to twitch or justin
-     SERVER="live-atl" # twitch server in frankfurt, see https://stream.twitch.tv/ingests/ for list
+function voldown {
+    pactl -- set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -10%;
+}
 
-     ffmpeg -f x11grab -s "$INRES" -r "$FPS" -i :0.0 -f pulse -i 0 -f flv -ac 2 -ar $AUDIO_RATE \
-       -vcodec libx264 -g $GOP -keyint_min $GOPMIN -b:v $CBR -minrate $CBR -maxrate $CBR -pix_fmt yuv420p\
-       -s $OUTRES -preset $QUALITY -tune film -acodec aac -threads $THREADS -strict normal \
-       -bufsize $CBR "rtmp://$SERVER.twitch.tv/app/$STREAM_KEY"
- }
-alias vold="amixer -D pulse sset Master 5%-"
+function tbin () { open $(cat $@ | nc termbin.com 9999); }
+alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/dusty/.sdkman"
+[[ -s "/home/dusty/.sdkman/bin/sdkman-init.sh" ]] && source "/home/dusty/.sdkman/bin/sdkman-init.sh"
+function magicRec2 { ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i  :1.0 -f pulse -ac 2 -i default .mkv;   }
